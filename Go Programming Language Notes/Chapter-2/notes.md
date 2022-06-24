@@ -207,4 +207,3 @@ Celsius(t) and Fahrenheit(t) are conversions, not functions calls. They don't ch
 way, but they make the change of meaning explicit. On the other hand, the functions CToF and FToC convert between two
 scales; they do return different values.
 
-### 2.6 PACKAGES AND Files
