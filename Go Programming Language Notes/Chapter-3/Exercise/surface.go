@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"os"
 )
 
 const (
@@ -17,20 +18,30 @@ const (
 var sin30, cos30 = math.Sin(angle), math.Cos(angle) // sin(30), cos(30)
 
 func main() {
-	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
+	htmlSVG, err := os.Create("svg.html")
+	if err != nil {
+		panic(err)
+	}
+	startString := fmt.Sprintf("<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
-		"width='%d' height='%d'>", width, height)
+		"width='%d' height='%d'>\n", width, height)
+	htmlSVG.WriteString(startString)
+	fmt.Printf(startString)
 	for i := 0; i < cells; i++ {
 		for j := 0; j < cells; j++ {
 			ax, ay := corner(i+1, j)
 			bx, by := corner(i, j)
 			cx, cy := corner(i, j+1)
 			dx, dy := corner(i+1, j+1)
-			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
+			polygonPoint := fmt.Sprintf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 				ax, ay, bx, by, cx, cy, dx, dy)
+			htmlSVG.WriteString(polygonPoint)
+			fmt.Printf(polygonPoint)
 		}
 	}
 	fmt.Println("</svg>")
+	htmlSVG.WriteString("</svg>")
+	htmlSVG.Sync()
 }
 
 func corner(i, j int) (float64, float64) {
