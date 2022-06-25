@@ -49,7 +49,13 @@ func corner(i, j int) (float64, float64) {
 	x := xyRange * (float64(i)/cells - 0.5)
 	y := xyRange * (float64(j)/cells - 0.5)
 	// Compute surface height z.
-	z := f(x, y)
+
+	// Original Shape
+	//z := f(x, y)
+
+	// Exercise 3.2
+	z := f2(x, y)
+
 	// Project (x,y,z) isometrically onto 2-D SVG canvas (sx,sy).
 	sx := width/2 + (x-y)*cos30*xyScale
 	sy := height/2 + (x+y)*sin30*xyScale - z*zScale
@@ -63,4 +69,9 @@ func f(x, y float64) float64 {
 		return 0.0
 	}
 	return math.Sin(r) / r
+}
+
+// Exercise 3.2
+func f2(x, y float64) float64 {
+	return math.Pow(2, math.Sin(x)) * math.Pow(2, math.Sin(y)) / 12
 }
