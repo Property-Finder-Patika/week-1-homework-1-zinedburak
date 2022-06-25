@@ -121,3 +121,66 @@ string representations, and functions for quoting and unquoting strings
 The unicode package provides functions like IsDigit, IsLetter, IsUpper, and IsLower for classifying runes. Each function
 takes a single rune argument and returns boolean. Conversion functions like ToUpper and ToLower convert a rune into the
 given
+
+### 3.6 Constants
+
+Constants are expressions whose value is known to the compiler and whose evaluation is guaranteed to occur at compile
+time, not at run time. The underlying type of every constant is basic type: boolean, string or number.
+
+A const declaration defines named values that look syntactically like variables but whose value is constant, which
+prevents accidental (or nefarious) changes during program execution. For instance, a constant is more appropriate than a
+variable for a mathematical constant like pi, since its value won't change:
+
+```go
+const pi = 3.14159
+const (
+    e  = 2.71828182845904523536028747135266249775724709369995957496696763
+    pi = 3.14159265358979323846264338327950288419716939937510582097494459
+)
+```
+
+When a sequence of constants is declared as a group, the right-hand side expression may be omitted for all but th first
+of the group, implying that the previous expression and its type should be used again
+
+```go
+const ( 
+    a=1
+    b
+    c=2
+    d
+)
+fmt.Println(a, b, c, d) // "1 1 2 2"
+```
+
+A const declaration may use the constant generator iota, which is used to create a sequence of related values without
+spelling out each one explicitly. In a const declaration, the value of iota begins at zero and increments by one for
+each item in the sequence.
+
+```go
+type Weekday int
+const (
+      Sunday Weekday = iota
+      Monday
+      Tuesday
+      Wednesday
+      Thursday
+      Friday
+      Saturday
+)
+```
+This declares Sunday to be 0, Monday to be 1, and so on.
+
+As a more complex example of iota, this declaration names the powers of 1024:
+```go
+const (
+    _ = 1 << (10 * iota)
+    KiB // 1024
+    MiB // 1048576
+    GiB // 1073741824
+    TiB // 1099511627776
+    PiB // 1125899906842624
+    EiB // 1152921504606846976
+    ZiB // 1180591620717411303424
+    YiB // 1208925819614629174706176
+)
+```
