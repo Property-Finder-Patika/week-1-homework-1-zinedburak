@@ -8,6 +8,7 @@ import (
 func main() {
 	fmt.Println(comma("12345678"))
 	fmt.Println(commaWByte("12345678"))
+	fmt.Println(isAnagram("Burak", "Deniz"))
 }
 
 func comma(s string) string {
@@ -39,4 +40,25 @@ func commaWByte(s string) string {
 		}
 	}
 	return buf.String()
+}
+
+// Exercise 3.12
+func isAnagram(firstWord, secondWord string) bool {
+	m := make(map[rune]int)
+
+	for _, char := range firstWord {
+		m[char]++
+	}
+	for _, char := range secondWord {
+		if i, ok := m[char]; ok {
+			if i > 1 {
+				m[char]--
+			} else {
+				delete(m, char)
+			}
+		} else {
+			return false
+		}
+	}
+	return len(m) == 0
 }
