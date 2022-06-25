@@ -3,11 +3,13 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"strings"
 )
 
 func main() {
 	fmt.Println(comma("12345678"))
 	fmt.Println(commaWByte("12345678"))
+	fmt.Println(commaWSignFloat("-12345678.123456756"))
 	fmt.Println(isAnagram("Burak", "Deniz"))
 }
 
@@ -38,6 +40,27 @@ func commaWByte(s string) string {
 		if i != times-1 {
 			buf.WriteString(",")
 		}
+	}
+	return buf.String()
+}
+
+// Exercise 3.11
+func commaWSignFloat(s string) string {
+	var sign string
+	var numberString string
+	if s[0:1] == "+" || s[0:1] == "-" {
+		sign = s[0:1]
+		numberString = s[1:]
+	}
+	var buf bytes.Buffer
+	buf.WriteString(sign)
+	periodIndex := strings.LastIndex(s, ".")
+	if periodIndex != -1 {
+		buf.WriteString(commaWByte(numberString[:periodIndex-1]))
+		buf.WriteString(".")
+		buf.WriteString(numberString[periodIndex+1:])
+	} else {
+		buf.WriteString(commaWByte(numberString))
 	}
 	return buf.String()
 }
