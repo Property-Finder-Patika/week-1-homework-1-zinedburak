@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	file, _ := os.Create("mandelbrot.png")
+	file, _ := os.Create("Newton.png")
 	defer file.Close()
 	const (
 		xMin, yMin, xMax, yMax = -2, -2, +2, +2
@@ -22,7 +22,7 @@ func main() {
 			x := float64(px)/width*(xMax-xMin) + xMin
 			z := complex(x, y)
 			// Image point (px, py) represents complex value z.
-			img.Set(px, py, mandelbrot(z))
+			img.Set(px, py, newtonMethod(z))
 		}
 	}
 
@@ -44,6 +44,19 @@ func mandelbrot(z complex128) color.Color {
 			}
 			// Original
 			//return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
+}
+
+// Exercise 3.7
+func newtonMethod(z complex128) color.Color {
+	const iterations = 69
+	const contrast = 17
+	for i := uint8(0); i < iterations; i++ {
+		z -= (z - 1/(z*z*z)) / 4
+		if cmplx.Abs(z*z*z*z-1) < 1e-6 {
+			return color.Gray{255 - contrast*i}
 		}
 	}
 	return color.Black
