@@ -51,8 +51,8 @@ func mandelbrot(z complex128) color.Color {
 
 // Exercise 3.7
 func newtonMethod(z complex128) color.Color {
-	const iterations = 69
-	const contrast = 17
+	const iterations = 37
+	const contrast = 7
 	for i := uint8(0); i < iterations; i++ {
 		z -= (z - 1/(z*z*z)) / 4
 		if cmplx.Abs(z*z*z*z-1) < 1e-6 {
