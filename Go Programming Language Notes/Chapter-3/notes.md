@@ -41,14 +41,83 @@ Go also provides the following bitwise binary operators, the first four of which
 ### 3.2 Floating-Point Numbers
 
 Go Provides two sizes of floating -point numbers, float 32 and float 64. A float32 provides approximately six decimal
-digits of precision, whereas a float64 provides 15 digits. 
+digits of precision, whereas a float64 provides 15 digits.
 
-The math package has functions for creating and detecting the
-special values defined by IEEE 754: the positive and negative infinities, which represent numbers of excessifve
-magnitude and the result of division by zero; NaN("not a number""), the result of such mathematically dubious operations
-as  0/0 or Sqrt(-1).
+The math package has functions for creating and detecting the special values defined by IEEE 754: the positive and
+negative infinities, which represent numbers of excessifve magnitude and the result of division by zero; NaN("not a
+number""), the result of such mathematically dubious operations as 0/0 or Sqrt(-1).
 
 ``` go
 var z float64
 fmt.Println(z,-z,1/z,-1/z,z/z)  // "0 -0 +Inf -Inf NaN"
 ```
+
+### 3.5 Strings
+
+A string is an immutable sequence of bytes. Strings may contain arbitrary data, including bytes with value 0, but
+usually they contain human-readable text. Text strings are conventionally interpreted as UTF-8-encoded sequences of
+Unicode code points.
+
+The built-in len functions returns the number of bytes(not runes) in a string and index operation s[i] retrieves the
+i-th byte of string s, where 0 <= i < len(s)
+
+```go
+s := "hello, world"
+fmt.Println(len(s))     // "12"
+fmt.Println(s[0], s[7]) // "104 119"  ('h' and 'w')
+```
+
+The i-th byte of a string is not necessarily the i-th character of a string, because the UTF-8 encoding of a non-ASCII
+code point requires two or more bytes.
+
+The substring operation s[i:j] yields new string consisting of the bytes of the original string starting at index i and
+continuing up to, but not including, the byte at index j. The result contains j0i bytes.
+
+```go
+fmt.Println(s[0:5]) // "hello"
+fmt.Println(s[:5]) // "hello"
+fmt.Println(s[7:]) // "world"
+fmt.Println(s[:])  // "hello, world"
+```
+
+Strings may be compared with comparison operators like == and <; the comparison is done byte by byte, so the result is
+the natural lexicographic ordering.
+
+Strings values are immutable: the byte sequence contained in a string value can never be changed, though of course we
+can assign a new value to a string variable. To append string to another, for instance, we can write
+
+```go
+s := "left foot"
+t := s
+s += ", right foot"
+```
+
+This does not modify the string that s originally held but causes s to hold the new string formed by the += statement;
+meanwhile, t still contains the old string
+
+```go
+fmt.Println(s) // "left foot, right foot"
+fmt.Println(t) // "left foot"
+```
+
+Since strings are immutable, constructions that try to modify a string's data in place are not allowed:
+
+```go
+s[0] = 'L' // compile error: cannot assign to s[0]
+```
+
+### 3.5.4 Strings and Byte Slices
+
+Four standard packages are particularly important for manipulating strings: bytes, strings, strconv, and unicode. The
+strings package provides many functions for searching, replacing comparing, trimming, splitting, and joining.
+
+The bytes package has similar functions for manipulating slices of bytes, of type []byte, which share some properties
+with strings. Because strings are immutable, building up strings incrementally can involve a lot of allocation and
+copying. In such cases, it's more efficient to use the bytes.
+
+The strconv package provides functions for converting boolean, integer, and floating-point values to and from their
+string representations, and functions for quoting and unquoting strings
+
+The unicode package provides functions like IsDigit, IsLetter, IsUpper, and IsLower for classifying runes. Each function
+takes a single rune argument and returns boolean. Conversion functions like ToUpper and ToLower convert a rune into the
+given
