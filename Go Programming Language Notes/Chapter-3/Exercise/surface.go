@@ -33,12 +33,15 @@ func main() {
 			bx, by, bIsPeak := corner(i, j)
 			cx, cy, cIsPeak := corner(i, j+1)
 			dx, dy, dIsPeak := corner(i+1, j+1)
+
+			// Exercise 3.3
 			var color string
 			if aIsPeak || bIsPeak || cIsPeak || dIsPeak {
 				color = "#f00"
 			} else {
 				color = "#00f"
 			}
+
 			polygonPoint := fmt.Sprintf("<polygon points='%g,%g %g,%g %g,%g %g,%g' style='stroke: %s'/>\n",
 				ax, ay, bx, by, cx, cy, dx, dy, color)
 			htmlSVG.WriteString(polygonPoint)
@@ -77,6 +80,7 @@ func f(x, y float64) (float64, bool) {
 	return math.Sin(r) / r, isPeak(r)
 }
 
+// Exercise 3.3
 func isPeak(r float64) bool {
 	if math.Abs(r-math.Tan(r)) < 3 {
 		return true
